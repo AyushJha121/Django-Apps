@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from models import Student
+from cbvApp.models import Student
 from rest_framework.response import Response
 from rest_framework import status
-from serializers import StudentSerializer
+from cbvApp.serializers import StudentSerializer
 from rest_framework.views import APIView
 from django.http import Http404
 
@@ -32,7 +32,7 @@ class StudentDetail(APIView):
         except Student.DoesNotExist:
             raise Http404
 
-    def get(self, pk):
+    def get(self, request, pk):
         student = self.get_object(pk)
         serializer = StudentSerializer(student)
         return Response(serializer.data)
@@ -45,7 +45,7 @@ class StudentDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,pk):
+    def delete(self,request,pk):
         student = self.get_object(pk)
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
